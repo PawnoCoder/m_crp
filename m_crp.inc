@@ -1,6 +1,6 @@
 /*
 
-	About: Convert Russian text to pawn include v1.2
+	About: Convert Russian text to pawn include v1.3
 	Author: Noname
 
 */
@@ -18,57 +18,18 @@
 	Define const
 */
 
-#if !defined FIX_const
-	#define FIX_const 0
-	#define M_CRUSTOPWN_FIX_CLEAR
+#if !defined MAX_CRP_SIZE
+	#define MAX_CRP_SIZE 256
 #endif
 
-#if !FIX_const
-	native Text:MCRP_TextDrawCreate(Float:x, Float:y, text[]) = TextDrawCreate;
+/*
+	Natives
+*/
 
-	#if defined _ALS_TextDrawCreate
-		#undef TextDrawCreate
-	#else
-		#define _ALS_TextDrawCreate
-	#endif
-
-	#define TextDrawCreate( MCRP_TextDrawCreate(
-
-	native MCRP_TextDrawSetString(Text:text, string[]) = TextDrawSetString;
-
-	#if defined _ALS_TextDrawSetString
-		#undef TextDrawSetString
-	#else
-		#define _ALS_TextDrawSetString
-	#endif
-
-	#define TextDrawSetString( MCRP_TextDrawSetString(
-
-	native PlayerText:MCRP_CreatePlayerTextDraw(playerid, Float:x, Float:y, const text[]) = CreatePlayerTextDraw;
-
-	#if defined _ALS_CreatePlayerTextDraw
-		#undef CreatePlayerTextDraw
-	#else
-		#define _ALS_CreatePlayerTextDraw
-	#endif
-
-	#define CreatePlayerTextDraw( MCRP_CreatePlayerTextDraw(
-
-	native MCRP_PlayerTextDrawSetString(playerid, PlayerText:text, const string[]) = PlayerTextDrawSetString;
-
-	#if defined _ALS_PlayerTextDrawSetString
-		#undef PlayerTextDrawSetString
-	#else
-		#define _ALS_PlayerTextDrawSetString
-	#endif
-
-	#define PlayerTextDrawSetString( MCRP_PlayerTextDrawSetString(
-
-	#if defined M_CRUSTOPWN_FIX_CLEAR
-		#undef M_CRUSTOPWN_FIX_CLEAR
-		#undef FIX_const
-	#endif
-#endif
+native Text:__m_crp__TextDrawCreate(Float:x, Float:y, text[]) = TextDrawCreate;
+native __m_crp__TextDrawSetString(Text:text, string[]) = TextDrawSetString;
+native PlayerText:__m_crp__CreatePlayerTextDraw(playerid, Float:x, Float:y, const text[]) = CreatePlayerTextDraw;
+native __m_crp__PlayerTextDrawSetStrin(playerid, PlayerText:text, const string[]) = PlayerTextDrawSetString;
 
 /*
 	Vars
@@ -107,7 +68,7 @@ static stock ConvertRusToPwn(const string[], buffer[])
 stock CRusToPwn_GameTextForAll(const string[], time, style)
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(string, info);
 	return GameTextForAll(info, time, style);
@@ -127,7 +88,7 @@ stock CRusToPwn_GameTextForAll(const string[], time, style)
 stock CRusToPwn_GameTextForPlayer(playerid, const string[], time, style)
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(string, info);
 	return GameTextForPlayer(playerid, info, time, style);
@@ -147,10 +108,10 @@ stock CRusToPwn_GameTextForPlayer(playerid, const string[], time, style)
 stock Text:CRusToPwn_TextDrawCreate(Float:x, Float:y, const text[])
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(text, info);
-	return TextDrawCreate(x, y, info);
+	return __m_crp__TextDrawCreate(x, y, info);
 }
 #if defined _ALS_TextDrawCreate
 	#undef TextDrawCreate
@@ -167,10 +128,10 @@ stock Text:CRusToPwn_TextDrawCreate(Float:x, Float:y, const text[])
 stock CRusToPwn_TextDrawSetString(Text:text, const string[])
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(string, info);
-	return TextDrawSetString(text, info);
+	return __m_crp__TextDrawSetString(text, info);
 }
 #if defined _ALS_TextDrawSetString
 	#undef TextDrawSetString
@@ -187,10 +148,10 @@ stock CRusToPwn_TextDrawSetString(Text:text, const string[])
 stock PlayerText:CRusToPwn_CreatePlayerTextDraw(playerid, Float:x, Float:y, const text[])
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(text, info);
-	return CreatePlayerTextDraw(playerid, x, y, info);
+	return __m_crp__CreatePlayerTextDraw(playerid, x, y, info);
 }
 #if defined _ALS_CreatePlayerTextDraw
 	#undef CreatePlayerTextDraw
@@ -207,10 +168,10 @@ stock PlayerText:CRusToPwn_CreatePlayerTextDraw(playerid, Float:x, Float:y, cons
 stock CRusToPwn_PlayerTextDrawSetStr(playerid, PlayerText:text, const string[])
 {
 	new
-		info[256 + 1];
+		info[MAX_CRP_SIZE + 1];
 
 	ConvertRusToPwn(string, info);
-	return PlayerTextDrawSetString(playerid, text, info);
+	return __m_crp__PlayerTextDrawSetStrin(playerid, text, info);
 }
 #if defined _ALS_PlayerTextDrawSetString
 	#undef PlayerTextDrawSetString
